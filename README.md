@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Metamundi · Cotação inteligente de passagens
 
-## Getting Started
+Plataforma que automatiza a cotação de passagens da **Metamundi** (agência de viagens):
 
-First, run the development server:
+> A agência manda o pedido no **WhatsApp** → uma **IA interpreta** → o sistema busca preços (**em dinheiro + em milhas + por companhia**) → devolve a **cotação estruturada** para a agência escolher.
+
+Objetivo: cortar o tempo de cotação manual (de ~45 min para segundos).
+**Awer** orquestra a solução; os devs da Metamundi integram as fontes reais no esqueleto abaixo.
+
+> ⚠️ **Protótipo navegável.** Todos os dados são **fictícios/mockados**. A arquitetura já está pronta para receber as integrações reais — veja [Onde plugar o real](#onde-plugar-o-real).
+
+---
+
+## Stack
+
+- **Next.js 16** (App Router) + **React 19** + **TypeScript**
+- **Tailwind CSS v4** (design tokens próprios, layout *bento*)
+- **lucide-react** (ícones)
+- Deploy **Vercel** (zero config)
+
+## Rodando localmente
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# http://localhost:3000  → redireciona para /login
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build de produção:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build && npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Fluxo de telas
 
-## Learn More
+| Rota | Tela | O que mostra |
+|------|------|--------------|
+| `/login` | Login | Entrada da agência (split-screen). Credenciais já preenchidas — é só **Entrar**. |
+| `/dashboard` | Dashboard (bento) | KPIs, tempo médio de cotação, cotações recentes, WhatsApp ao vivo, companhias mais cotadas. |
+| `/conversas` | Conversas (WhatsApp) | Chat real: pedido em texto livre → **IA interpreta** → responde com a cotação. |
+| `/nova` | Nova cotação | Cola o pedido → **Interpretar com IA** (chama a API) → **Gerar cotação**. |
+| `/cotacoes` | Histórico | Todas as cotações da operação. |
+| `/cotacoes/[id]` | **Cotação estruturada** (o coração) | Comparativo por companhia: **dinheiro + milhas**, destaques de *melhor preço* e *melhor em milhas*, ordenação. |
 
-To learn more about Next.js, take a look at the following resources:
+## Arquitetura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├─ app/
+│  ├─ (app)/                 # área logada (layout com sidebar)
+│  │  ├─ dashboard/          # bento
+│  │  ├─ conversas/          # WhatsApp + interpretação IA
+│  │  ├─ cotacoes/           # lista + [id] (cotação estruturada)
+│  │  └─ nova/               # fluxo de nova cotação
+│  ├─ login/                 # autenticação (mock)
+│  └─ api/                   # ── contrato HTTP para integrações ──
+│     ├─ auth/login          # POST  autenticação
+│     ├─ interpret           # POST  texto livre → pedido estruturado (NLU)
+│     ├─ quotes              # GET lista · POST dispara busca
+│     ├─ quotes/[id]         # GET cotação completa
+│     ├─ conversations       # GET lista · /[id] detalhe
+│     └─ dashboard           # GET indicadores + recentes
+├─ components/               # UI (bento, badges, timeline de voo, cards…)
+└─ lib/
+   ├─ types.ts               # modelo de domínio (a "forma" dos dados)
+   ├─ mock-data.ts           # dados de exemplo
+   └─ data.ts                # camada de acesso (DAL) + IA de interpretação
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Onde plugar o real
 
-## Deploy on Vercel
+A regra de ouro: **páginas e APIs só conversam com `src/lib/data.ts`**. Trocar mock por produção
+não exige mexer na UI — basta reimplementar as funções da DAL mantendo os tipos de `src/lib/types.ts`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Função em `lib/data.ts` | Hoje (mock) | Integração real dos devs |
+|-------------------------|-------------|--------------------------|
+| `interpret(text)` | heurística (regex) | LLM (ex.: Claude) com extração de entidades |
+| `getQuoteIdForRoute()` / `POST /api/quotes` | resolve mock por rota | motor de busca de tarifas (companhias + milhas) |
+| `getQuote(id)` | objeto estático | resultado real da busca |
+| `getConversations()` | lista fixa | WhatsApp Business API |
+| `POST /api/auth/login` | aceita tudo | sessão/JWT real |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Os endpoints em `app/api/*` já expõem esse contrato em HTTP — prontos para serem consumidos
+pelo sistema da Metamundi.
+
+## Deploy na Vercel
+
+O projeto é **zero-config** na Vercel:
+
+1. Importe o repositório em [vercel.com/new](https://vercel.com/new) (framework detectado: Next.js).
+2. Deploy. Pronto.
+
+Ou via CLI:
+
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+---
+
+© 2025 Metamundi · Plataforma orquestrada pela **Awer**.

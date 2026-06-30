@@ -1,26 +1,132 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Metamundi · Design tokens
+   ============================================================ */
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand — indigo / violet */
+  --color-brand-50:  #eef1ff;
+  --color-brand-100: #e0e5ff;
+  --color-brand-200: #c7ceff;
+  --color-brand-300: #a5b0fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #5046e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+  --color-brand-900: #312e81;
+  --color-brand-950: #1e1b4b;
+
+  /* Accent — cyan (cash / velocidade) */
+  --color-accent-400: #22d3ee;
+  --color-accent-500: #06b6d4;
+  --color-accent-600: #0891b2;
+
+  /* Miles — amber/gold */
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #f59e0b;
+  --color-gold-600: #d97706;
+
+  --color-ink: #0c1230;
+  --color-ink-soft: #3a4373;
+  --color-line: #e7e9f4;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f6f7fb;
+  --card: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+* { border-color: var(--color-line); }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+html { -webkit-text-size-adjust: 100%; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
+
+/* ============================================================
+   Utilities
+   ============================================================ */
+.app-bg {
+  background:
+    radial-gradient(1100px 560px at 88% -8%, rgba(124, 58, 237, 0.10), transparent 60%),
+    radial-gradient(820px 460px at -6% 2%, rgba(6, 182, 212, 0.10), transparent 55%),
+    var(--bg);
+}
+
+.gradient-brand {
+  background-image: linear-gradient(135deg, #6366f1 0%, #8b5cf6 52%, #a855f7 100%);
+}
+.gradient-night {
+  background-image: linear-gradient(135deg, #141a3f 0%, #1e2552 48%, #3b2d77 100%);
+}
+.text-gradient {
+  background-image: linear-gradient(90deg, #818cf8, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--color-line);
+  border-radius: 20px;
+  box-shadow: 0 1px 2px rgba(16, 22, 58, 0.04), 0 12px 30px -16px rgba(16, 22, 58, 0.18);
+}
+.card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+.card-hover:hover {
+  transform: translateY(-3px);
+  border-color: #d9ddf3;
+  box-shadow: 0 22px 50px -22px rgba(16, 22, 58, 0.35);
+}
+
+.ring-soft { box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.14); }
+
+/* WhatsApp chat pattern */
+.wa-pattern {
+  background-color: #e7ddd2;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* Scrollbar */
+.scroll-soft::-webkit-scrollbar { width: 9px; height: 9px; }
+.scroll-soft::-webkit-scrollbar-thumb { background: #d3d8ee; border-radius: 9px; border: 2px solid transparent; background-clip: padding-box; }
+.scroll-soft::-webkit-scrollbar-thumb:hover { background: #b9c0e6; background-clip: padding-box; }
+.scroll-soft::-webkit-scrollbar-track { background: transparent; }
+
+/* ============================================================
+   Animations
+   ============================================================ */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.anim-up { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-up-1 { animation-delay: 0.05s; }
+.anim-up-2 { animation-delay: 0.10s; }
+.anim-up-3 { animation-delay: 0.16s; }
+.anim-up-4 { animation-delay: 0.22s; }
+.anim-up-5 { animation-delay: 0.28s; }
+.anim-up-6 { animation-delay: 0.34s; }
+
+@keyframes pop { from { opacity: 0; transform: translateY(6px) scale(0.98); } to { opacity: 1; transform: none; } }
+.anim-pop { animation: pop 0.35s ease both; }
+
+@keyframes blink { 0%, 60%, 100% { opacity: 0.3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+.dot-typing { animation: blink 1.2s infinite; }
+
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+.shimmer { position: relative; overflow: hidden; }
+.shimmer::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  animation: shimmer 1.6s infinite;
+}
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.anim-float { animation: float 4s ease-in-out infinite; }
