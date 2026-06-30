@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
+/* Dark mode acionado por classe .dark no <html> (toggle manual) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ============================================================
    Metamundi · Design tokens
    ============================================================ */
 @theme {
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 
-  /* Brand — indigo / violet */
+  /* Brand — indigo / violet (vivas nos dois temas) */
   --color-brand-50:  #eef1ff;
   --color-brand-100: #e0e5ff;
   --color-brand-200: #c7ceff;
@@ -19,7 +22,7 @@
   --color-brand-900: #312e81;
   --color-brand-950: #1e1b4b;
 
-  /* Accent — cyan (cash / velocidade) */
+  /* Accent — cyan */
   --color-accent-400: #22d3ee;
   --color-accent-500: #06b6d4;
   --color-accent-600: #0891b2;
@@ -29,14 +32,58 @@
   --color-gold-500: #f59e0b;
   --color-gold-600: #d97706;
 
-  --color-ink: #0c1230;
-  --color-ink-soft: #3a4373;
-  --color-line: #e7e9f4;
+  /* Semânticos — referenciam vars de runtime p/ flipar no .dark */
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-card: var(--card);
 }
 
+/* ---- Tema claro (padrão) ---- */
 :root {
   --bg: #f6f7fb;
   --card: #ffffff;
+  --ink: #0c1230;
+  --ink-soft: #3a4373;
+  --line: #e7e9f4;
+  color-scheme: light;
+}
+
+/* ---- Tema escuro ---- */
+.dark {
+  --bg: #080d1f;
+  --card: #121831;
+  --ink: #eef1fb;
+  --ink-soft: #a7b0d6;
+  --line: #242c49;
+  color-scheme: dark;
+
+  /* Rampa slate — superfícies (50–200) ficam escuras, textos (300–700) claros */
+  --color-slate-50: #161d35;
+  --color-slate-100: #1b2340;
+  --color-slate-200: #283152;
+  --color-slate-300: #6a7290;
+  --color-slate-400: #828bad;
+  --color-slate-500: #99a1c2;
+  --color-slate-600: #aeb6d6;
+  --color-slate-700: #c3cae4;
+
+  /* Tints suaves — viram véus translúcidos sobre o escuro */
+  --color-brand-50:  color-mix(in srgb, var(--color-brand-500) 17%, transparent);
+  --color-brand-100: color-mix(in srgb, var(--color-brand-500) 26%, transparent);
+  --color-brand-700: #aab4fc;
+  --color-amber-50:  color-mix(in srgb, var(--color-gold-500) 16%, transparent);
+  --color-amber-100: color-mix(in srgb, var(--color-gold-500) 24%, transparent);
+  --color-amber-200: color-mix(in srgb, var(--color-gold-500) 34%, transparent);
+  --color-amber-300: color-mix(in srgb, var(--color-gold-500) 42%, transparent);
+  --color-amber-600: #fbbf24;
+  --color-amber-700: #fcd34d;
+  --color-emerald-50: color-mix(in srgb, #22c55e 16%, transparent);
+  --color-emerald-600: #34d399;
+  --color-emerald-700: #6ee7b7;
+  --color-cyan-50: color-mix(in srgb, #06b6d4 16%, transparent);
+  --color-cyan-600: #22d3ee;
+  --color-rose-50: color-mix(in srgb, #f43f5e 16%, transparent);
 }
 
 * { border-color: var(--color-line); }
@@ -60,6 +107,12 @@ body {
     radial-gradient(820px 460px at -6% 2%, rgba(6, 182, 212, 0.10), transparent 55%),
     var(--bg);
 }
+.dark .app-bg {
+  background:
+    radial-gradient(1100px 560px at 88% -8%, rgba(124, 58, 237, 0.18), transparent 60%),
+    radial-gradient(820px 460px at -6% 2%, rgba(6, 182, 212, 0.14), transparent 55%),
+    var(--bg);
+}
 
 .gradient-brand {
   background-image: linear-gradient(135deg, #6366f1 0%, #8b5cf6 52%, #a855f7 100%);
@@ -78,13 +131,20 @@ body {
   background: var(--card);
   border: 1px solid var(--color-line);
   border-radius: 20px;
-  box-shadow: 0 1px 2px rgba(16, 22, 58, 0.04), 0 12px 30px -16px rgba(16, 22, 58, 0.18);
+  box-shadow: 0 1px 2px rgba(8, 13, 31, 0.04), 0 12px 30px -16px rgba(8, 13, 31, 0.18);
+}
+.dark .card {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 36px -20px rgba(0, 0, 0, 0.6);
 }
 .card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
 .card-hover:hover {
   transform: translateY(-3px);
   border-color: #d9ddf3;
-  box-shadow: 0 22px 50px -22px rgba(16, 22, 58, 0.35);
+  box-shadow: 0 22px 50px -22px rgba(8, 13, 31, 0.35);
+}
+.dark .card-hover:hover {
+  border-color: #323b60;
+  box-shadow: 0 24px 54px -24px rgba(0, 0, 0, 0.7);
 }
 
 .ring-soft { box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.14); }
@@ -95,12 +155,18 @@ body {
   background-image: radial-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px);
   background-size: 18px 18px;
 }
+.dark .wa-pattern {
+  background-color: #0b141a;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+}
 
 /* Scrollbar */
 .scroll-soft::-webkit-scrollbar { width: 9px; height: 9px; }
 .scroll-soft::-webkit-scrollbar-thumb { background: #d3d8ee; border-radius: 9px; border: 2px solid transparent; background-clip: padding-box; }
 .scroll-soft::-webkit-scrollbar-thumb:hover { background: #b9c0e6; background-clip: padding-box; }
 .scroll-soft::-webkit-scrollbar-track { background: transparent; }
+.dark .scroll-soft::-webkit-scrollbar-thumb { background: #2c3556; background-clip: padding-box; }
+.dark .scroll-soft::-webkit-scrollbar-thumb:hover { background: #3a4570; background-clip: padding-box; }
 
 /* ============================================================
    Animations

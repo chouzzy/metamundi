@@ -12,6 +12,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Logo, LogoMark } from "@/components/ui/Logo";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -70,7 +71,8 @@ export default function LoginPage() {
       </div>
 
       {/* Form panel */}
-      <div className="app-bg flex items-center justify-center px-6 py-12">
+      <div className="app-bg relative flex items-center justify-center px-6 py-12">
+        <ThemeToggle className="absolute right-5 top-5" />
         <div className="w-full max-w-sm">
           <div className="mb-8 lg:hidden">
             <Logo />
@@ -121,7 +123,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="anim-up anim-up-2 mt-6 rounded-xl border border-line bg-white px-4 py-3 text-[12.5px] font-medium text-slate-500">
+          <div className="anim-up anim-up-2 mt-6 rounded-xl border border-line bg-card px-4 py-3 text-[12.5px] font-medium text-slate-500">
             <span className="font-bold text-ink">Demo:</span> credenciais já preenchidas — é só clicar em{" "}
             <span className="font-bold text-brand-600">Entrar</span>.
           </div>
@@ -159,7 +161,7 @@ function Field({
   return (
     <label className="block">
       <span className="mb-1.5 block text-[12.5px] font-bold text-ink-soft">{label}</span>
-      <div className="flex items-center gap-2.5 rounded-xl border border-line bg-white px-3.5 py-3 transition focus-within:border-brand-400 focus-within:ring-4 focus-within:ring-brand-100">
+      <div className="flex items-center gap-2.5 rounded-xl border border-line bg-card px-3.5 py-3 transition focus-within:border-brand-400 focus-within:ring-4 focus-within:ring-brand-100">
         <span className="text-slate-400">{icon}</span>
         <input
           type={type}

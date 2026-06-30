@@ -90,7 +90,7 @@ export default async function CotacaoPage({ params }: { params: Promise<{ id: st
       </div>
 
       {/* Interpreted request */}
-      <div className="mt-4 rounded-2xl border border-line bg-white p-4">
+      <div className="mt-4 rounded-2xl border border-line bg-card p-4">
         <InterpretedChips request={r} />
       </div>
 

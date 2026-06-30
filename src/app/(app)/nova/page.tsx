@@ -81,7 +81,7 @@ export default function NovaCotacaoPage() {
             onChange={(e) => setText(e.target.value)}
             rows={5}
             placeholder="Ex: Preciso de passagem SP → Miami, ida 10/dez, volta 20/dez, 1 adulto, voo direto"
-            className="mt-3 w-full resize-none rounded-2xl border border-line bg-slate-50/50 p-4 text-[14px] font-medium leading-relaxed text-ink outline-none transition focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-100"
+            className="mt-3 w-full resize-none rounded-2xl border border-line bg-slate-50/50 p-4 text-[14px] font-medium leading-relaxed text-ink outline-none transition focus:border-brand-400 focus:bg-card focus:ring-4 focus:ring-brand-100"
           />
 
           <div className="mt-3">
@@ -95,7 +95,7 @@ export default function NovaCotacaoPage() {
                     setStatus("idle");
                     setRequest(null);
                   }}
-                  className="max-w-full truncate rounded-lg border border-line bg-white px-3 py-1.5 text-[12px] font-semibold text-ink-soft transition hover:border-brand-300 hover:text-brand-600"
+                  className="max-w-full truncate rounded-lg border border-line bg-card px-3 py-1.5 text-[12px] font-semibold text-ink-soft transition hover:border-brand-300 hover:text-brand-600"
                 >
                   {ex.split(",")[0]}
                 </button>
@@ -162,7 +162,7 @@ export default function NovaCotacaoPage() {
                       </div>
                     ))}
                   </div>
-                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white">
+                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-card">
                     <div className="h-full w-1/3 rounded-full gradient-brand shimmer" />
                   </div>
                 </div>

@@ -57,7 +57,7 @@ export function QuoteOptionsList({
               onClick={() => setSort(s.key)}
               className={cn(
                 "rounded-lg px-3.5 py-2 text-[12.5px] font-bold transition",
-                sort === s.key ? "bg-white text-brand-600 shadow-sm" : "text-ink-soft hover:text-ink",
+                sort === s.key ? "bg-card text-brand-600 shadow-sm" : "text-ink-soft hover:text-ink",
               )}
             >
               {s.label}
@@ -65,10 +65,10 @@ export function QuoteOptionsList({
           ))}
         </div>
         <div className="flex-1" />
-        <div className="hidden items-center gap-2 rounded-xl border border-line bg-white px-3 py-2 text-[12px] font-bold text-ink-soft shadow-sm sm:flex">
+        <div className="hidden items-center gap-2 rounded-xl border border-line bg-card px-3 py-2 text-[12px] font-bold text-ink-soft shadow-sm sm:flex">
           <Filter className="h-3.5 w-3.5 text-slate-400" /> {options.length} opções
         </div>
-        <div className="flex items-center gap-2 rounded-xl border border-line bg-white px-3 py-2 text-[12px] font-bold text-ink-soft shadow-sm">
+        <div className="flex items-center gap-2 rounded-xl border border-line bg-card px-3 py-2 text-[12px] font-bold text-ink-soft shadow-sm">
           <Plane className="h-3.5 w-3.5 text-slate-400" /> Todas as cias
         </div>
       </div>

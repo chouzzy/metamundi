@@ -26,7 +26,7 @@ export function ConversasClient({ conversations }: { conversations: Conversation
   const selected = conversations.find((c) => c.id === selectedId) ?? conversations[0];
 
   return (
-    <div className="flex h-[74vh] min-h-[520px] overflow-hidden rounded-[20px] border border-line bg-white shadow-[0_12px_30px_-16px_rgba(16,22,58,0.18)]">
+    <div className="flex h-[74vh] min-h-[520px] overflow-hidden rounded-[20px] border border-line bg-card shadow-[0_12px_30px_-16px_rgba(16,22,58,0.18)]">
       {/* Conversations list */}
       <div className={cn("w-full flex-none flex-col border-r border-line lg:flex lg:w-[330px]", showChat ? "hidden" : "flex")}>
         <div className="border-b border-line p-3.5">
@@ -89,7 +89,7 @@ export function ConversasClient({ conversations }: { conversations: Conversation
         {selected && (
           <>
             {/* header */}
-            <div className="flex items-center gap-3 border-b border-line bg-[#075e54] px-4 py-3 text-white">
+            <div className="flex items-center gap-3 border-b border-line bg-[#075e54] px-4 py-3 text-white dark:bg-[#202c33]">
               <button onClick={() => setShowChat(false)} className="lg:hidden">
                 <ArrowLeft className="h-5 w-5" />
               </button>
@@ -125,7 +125,7 @@ export function ConversasClient({ conversations }: { conversations: Conversation
 
             {/* messages */}
             <div className="wa-pattern flex-1 space-y-2 overflow-y-auto scroll-soft px-4 py-5 sm:px-8">
-              <div className="mx-auto w-fit rounded-lg bg-white/85 px-3 py-1 text-[11px] font-semibold text-slate-500 shadow-sm">
+              <div className="mx-auto w-fit rounded-lg bg-white/85 px-3 py-1 text-[11px] font-semibold text-slate-500 shadow-sm dark:bg-[#182229] dark:text-slate-300">
                 Conversa via WhatsApp Business · Metamundi
               </div>
               {selected.messages.map((m) => (
@@ -134,10 +134,10 @@ export function ConversasClient({ conversations }: { conversations: Conversation
             </div>
 
             {/* input */}
-            <div className="flex items-center gap-2.5 border-t border-line bg-[#f0f2f5] px-3 py-2.5">
+            <div className="flex items-center gap-2.5 border-t border-line bg-[#f0f2f5] px-3 py-2.5 dark:bg-[#1f2c33]">
               <Smile className="h-5 w-5 flex-none text-slate-400" />
               <Paperclip className="h-5 w-5 flex-none text-slate-400" />
-              <div className="flex-1 rounded-full bg-white px-4 py-2.5 text-[13px] font-medium text-slate-400">
+              <div className="flex-1 rounded-full bg-white px-4 py-2.5 text-[13px] font-medium text-slate-400 dark:bg-[#2a3942]">
                 Resposta automática ativada — a IA responde os pedidos
               </div>
               <div className="grid h-10 w-10 flex-none place-items-center rounded-full bg-[#00a884] text-white">
@@ -157,7 +157,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
   if (msg.kind === "interpreted" && msg.request) {
     return (
       <div className="anim-pop flex justify-end">
-        <div className="max-w-[88%] rounded-2xl rounded-tr-sm bg-white p-3.5 shadow-sm">
+        <div className="max-w-[88%] rounded-2xl rounded-tr-sm bg-white p-3.5 shadow-sm dark:bg-[#202c33]">
           <InterpretedChips request={msg.request} />
           <div className="mt-1.5 flex items-center justify-end gap-1 text-[10px] font-semibold text-slate-400">
             {msg.time} <CheckCheck className="h-3.5 w-3.5 text-sky-500" />
@@ -172,7 +172,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
       <div className="anim-pop flex justify-end">
         <Link
           href={`/cotacoes/${msg.quoteId}`}
-          className="group max-w-[86%] overflow-hidden rounded-2xl rounded-tr-sm bg-white shadow-sm transition hover:shadow-md"
+          className="group max-w-[86%] overflow-hidden rounded-2xl rounded-tr-sm bg-white shadow-sm transition hover:shadow-md dark:bg-[#202c33]"
         >
           <div className="flex items-center gap-2 gradient-brand px-4 py-2.5 text-white">
             <Sparkles className="h-4 w-4" />
@@ -213,8 +213,8 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
         className={cn(
           "max-w-[80%] px-3 py-2 text-[13.5px] font-medium leading-relaxed shadow-sm",
           isBot
-            ? "rounded-2xl rounded-tr-sm bg-[#d9fdd3] text-ink"
-            : "rounded-2xl rounded-tl-sm bg-white text-ink",
+            ? "rounded-2xl rounded-tr-sm bg-[#d9fdd3] text-ink dark:bg-[#005c4b] dark:text-[#e9edef]"
+            : "rounded-2xl rounded-tl-sm bg-white text-ink dark:bg-[#202c33] dark:text-[#e9edef]",
         )}
       >
         {msg.text}

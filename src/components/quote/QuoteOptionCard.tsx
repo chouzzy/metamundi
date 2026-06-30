@@ -111,7 +111,7 @@ export function QuoteOptionCard({
             <div className="mt-1 text-[11px] font-semibold text-amber-700/80">
               + {formatBRL(option.miles.taxes)} taxas
             </div>
-            <div className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-amber-300 bg-white px-2 py-1 text-[10.5px] font-extrabold text-amber-700">
+            <div className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-amber-300 bg-card px-2 py-1 text-[10.5px] font-extrabold text-amber-700">
               <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: airline.color }} />
               {option.miles.program}
             </div>

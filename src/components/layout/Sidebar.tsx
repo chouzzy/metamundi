@@ -11,6 +11,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { Logo, LogoMark } from "@/components/ui/Logo";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -62,10 +63,13 @@ export function Sidebar() {
   return (
     <>
       {/* Desktop */}
-      <aside className="sticky top-0 hidden h-screen w-[260px] flex-none flex-col border-r border-line bg-white/70 px-4 py-5 backdrop-blur lg:flex">
-        <Link href="/dashboard" className="px-1.5">
-          <Logo />
-        </Link>
+      <aside className="sticky top-0 hidden h-screen w-[260px] flex-none flex-col border-r border-line bg-card/70 px-4 py-5 backdrop-blur lg:flex">
+        <div className="flex items-center justify-between px-1.5">
+          <Link href="/dashboard">
+            <Logo />
+          </Link>
+          <ThemeToggle />
+        </div>
 
         <Link
           href="/nova"
@@ -88,7 +92,7 @@ export function Sidebar() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 rounded-xl border border-line bg-white px-3 py-2.5">
+          <div className="flex items-center gap-3 rounded-xl border border-line bg-card px-3 py-2.5">
             <div className="grid h-9 w-9 flex-none place-items-center rounded-lg bg-gradient-to-br from-sky-500 to-cyan-500 text-[13px] font-extrabold text-white">
               MV
             </div>
@@ -104,7 +108,7 @@ export function Sidebar() {
       </aside>
 
       {/* Mobile top bar */}
-      <div className="sticky top-0 z-40 flex items-center gap-3 border-b border-line bg-white/85 px-4 py-3 backdrop-blur lg:hidden">
+      <div className="sticky top-0 z-40 flex items-center gap-3 border-b border-line bg-card/85 px-4 py-3 backdrop-blur lg:hidden">
         <Link href="/dashboard">
           <LogoMark className="h-9 w-9" />
         </Link>
@@ -113,6 +117,7 @@ export function Sidebar() {
             <NavLinksMobile pathname={pathname} />
           </div>
         </div>
+        <ThemeToggle />
         <Link
           href="/nova"
           className="grid h-9 w-9 flex-none place-items-center rounded-lg gradient-brand text-white"
