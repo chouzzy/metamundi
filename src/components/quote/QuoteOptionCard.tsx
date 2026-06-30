@@ -11,7 +11,7 @@ import {
   Wallet,
 } from "lucide-react";
 import type { QuoteOption } from "@/lib/types";
-import { AIRLINES } from "@/lib/mock-data";
+import { getAirline } from "@/lib/mock-data";
 import { AirlineBadge } from "@/components/ui/AirlineBadge";
 import { FlightTimeline } from "@/components/ui/FlightTimeline";
 import { cn, formatBRL, formatMiles } from "@/lib/utils";
@@ -26,7 +26,7 @@ export function QuoteOptionCard({
   bestMiles: boolean;
 }) {
   const [sent, setSent] = useState(false);
-  const airline = AIRLINES[option.airline];
+  const airline = getAirline(option.airline);
   const direct = option.outbound.stops === 0 && option.inbound.stops === 0;
 
   return (

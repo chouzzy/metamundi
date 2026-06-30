@@ -1,4 +1,4 @@
-import { AIRLINES } from "@/lib/mock-data";
+import { getAirline } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
 export function AirlineBadge({
@@ -10,8 +10,7 @@ export function AirlineBadge({
   size?: "sm" | "md" | "lg";
   withName?: boolean;
 }) {
-  const a = AIRLINES[code];
-  if (!a) return null;
+  const a = getAirline(code);
 
   const dims = {
     sm: "h-8 w-8 text-[10px] rounded-[9px]",

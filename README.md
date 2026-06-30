@@ -84,6 +84,25 @@ não exige mexer na UI — basta reimplementar as funções da DAL mantendo os t
 Os endpoints em `app/api/*` já expõem esse contrato em HTTP — prontos para serem consumidos
 pelo sistema da Metamundi.
 
+## Dados reais (opcional) — API de tarifas
+
+O app já integra a **Travelpayouts (Aviasales Data API)** para puxar **preços reais** de passagens (gratuito). Funciona assim:
+
+- **Sem token** → tudo roda com dados mock (padrão, nunca quebra).
+- **Com token** → a tela **Nova cotação** dispara uma busca real e a cotação aberta mostra o selo **“Dados ao vivo · Travelpayouts”** com preços reais (em BRL). As **milhas** são *estimadas* a partir do preço (não há API pública gratuita de milhas).
+
+Para ativar:
+
+```bash
+cp .env.example .env.local
+# edite .env.local e cole seu TRAVELPAYOUTS_TOKEN
+npm run dev
+```
+
+Token gratuito: crie conta em [travelpayouts.com](https://www.travelpayouts.com) → *Developers / API tokens*. Na Vercel, adicione `TRAVELPAYOUTS_TOKEN` em **Settings → Environment Variables**.
+
+> Por que Travelpayouts e não Amadeus? A **Amadeus Self-Service** foi descontinuada (jul/2026). A Travelpayouts é gratuita, ativa e devolve preços reais por rota/data — encaixando no modelo da DAL ([src/lib/flights-api.ts](src/lib/flights-api.ts)). Trocar por Amadeus Enterprise/Duffel depois é só reimplementar `searchLiveQuote`.
+
 ## Deploy na Vercel
 
 O projeto é **zero-config** na Vercel:

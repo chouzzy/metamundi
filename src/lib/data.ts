@@ -5,6 +5,7 @@ import {
   QUOTE_ORDER,
   QUOTES,
 } from "./mock-data";
+import { decodeLiveId, searchLiveQuote } from "./flights-api";
 import type {
   Conversation,
   DashboardStats,
@@ -38,8 +39,20 @@ export function getQuotes(): QuoteSummary[] {
   return QUOTE_ORDER.map((id) => toSummary(QUOTES[id]));
 }
 
-export function getQuote(id: string): Quote | null {
-  return QUOTES[id] ?? null;
+export async function getQuote(id: string): Promise<Quote | null> {
+  // IDs "ao vivo" (live_...) carregam o pedido e disparam a busca real.
+  if (id.startsWith("live_")) {
+    const request = decodeLiveId(id);
+    if (request) {
+      const live = await searchLiveQuote(request);
+      if (live) return live;
+      // Fallback: usa a cotação mock da rota, sinalizada como exemplo.
+      const fallback = QUOTES[getQuoteIdForRoute(request.origin, request.destination)];
+      if (fallback) return { ...fallback, source: "mock" };
+    }
+    return null;
+  }
+  return QUOTES[id] ? { ...QUOTES[id], source: "mock" } : null;
 }
 
 export function getConversations(): Conversation[] {

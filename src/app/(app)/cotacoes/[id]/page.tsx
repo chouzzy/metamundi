@@ -17,7 +17,7 @@ import { QuoteOptionsList } from "./QuoteOptionsList";
 
 export default async function CotacaoPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const quote = getQuote(id);
+  const quote = await getQuote(id);
   if (!quote) notFound();
 
   const r = quote.request;
@@ -74,8 +74,17 @@ export default async function CotacaoPage({ params }: { params: Promise<{ id: st
         </div>
 
         <div className="relative z-10 mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4">
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2.5">
             <StatusBadge status={quote.status} />
+            {quote.source === "live" ? (
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-400/15 px-2.5 py-1 text-[11px] font-bold text-emerald-300">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> Dados ao vivo · Travelpayouts
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-2.5 py-1 text-[11px] font-bold text-white/70">
+                <span className="h-1.5 w-1.5 rounded-full bg-white/50" /> Dados de exemplo
+              </span>
+            )}
             <span className="text-[13px] font-semibold text-white/70">
               {quote.client} · {quote.agency}
             </span>
@@ -100,7 +109,9 @@ export default async function CotacaoPage({ params }: { params: Promise<{ id: st
       </div>
 
       <p className="mt-7 text-center text-[12px] font-semibold text-slate-400">
-        Preços e disponibilidade ilustrativos · dados fictícios para demonstração
+        {quote.source === "live"
+          ? "Preços reais (cacheados) via Travelpayouts · valores em milhas estimados a partir do preço em dinheiro"
+          : "Preços e disponibilidade ilustrativos · dados fictícios para demonstração"}
       </p>
     </>
   );

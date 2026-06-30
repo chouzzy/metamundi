@@ -7,7 +7,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const quote = getQuote(id);
+  const quote = await getQuote(id);
 
   if (!quote) {
     return NextResponse.json({ error: "Cotação não encontrada." }, { status: 404 });

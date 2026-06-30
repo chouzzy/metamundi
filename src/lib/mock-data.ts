@@ -24,6 +24,20 @@ export const AIRLINES: Record<string, Airline> = {
   AF: { code: "AF", name: "Air France", short: "AF", gradient: "linear-gradient(135deg,#002157,#e2003b)", color: "#002157", program: "Flying Blue" },
 };
 
+/** Companhia por código IATA, com fallback para códigos desconhecidos (vindos da API real). */
+export function getAirline(code: string): Airline {
+  return (
+    AIRLINES[code] ?? {
+      code,
+      name: code,
+      short: code,
+      gradient: "linear-gradient(135deg,#334155,#64748b)",
+      color: "#64748b",
+      program: "Programa parceiro",
+    }
+  );
+}
+
 // Dicionário de aeroportos p/ a IA (interpret) e exibição
 export const AIRPORTS: Record<string, { city: string; codes: string[] }> = {
   GRU: { city: "São Paulo", codes: ["sao paulo", "são paulo", "sp", "guarulhos", "gru"] },

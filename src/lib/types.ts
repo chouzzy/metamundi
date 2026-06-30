@@ -81,6 +81,7 @@ export interface QuoteSummary {
 export interface Quote extends QuoteSummary {
   options: QuoteOption[];
   searchMs: number; // tempo da busca, p/ destacar a velocidade
+  source?: "live" | "mock"; // origem dos dados (API real vs mock)
 }
 
 export type MessageRole = "agency" | "bot";
